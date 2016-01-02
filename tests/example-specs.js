@@ -9,10 +9,16 @@ var webdriverio = require('webdriverio'),
     accessKey = process.env.SAUCE_ACCESS_KEY,
     SauceLabs = require("saucelabs"),
     saucelabs = new SauceLabs({
-      username: user,
-      password: accessKey
+        username: user,
+        password: accessKey
     }),
-    DESIREDS = require('../desireds'),
+    DESIREDS = {
+        chrome: {
+            browserName: 'chrome',
+            platform: 'OS X 10.10',
+            version: '45.0'
+        },
+    },
     browserKey = process.env.BROWSER || 'chrome',
     desired = DESIREDS[browserKey],
     sauceConfig = {
@@ -50,37 +56,27 @@ describe('   mocha spec examples (' + desired.browserName + ')', function() {
     });
 
     afterEach(function(done, res) {
-        allPassed = allPassed && (this.currentTest.state === 'passed')
+        allPassed = allPassed && (this.currentTest.state === 'passed');
 
         // update sauce labs job
-        saucelabs.updateJob(client.requestHandler.sessionID, { name: name, passed: allPassed }, function() {});
+        saucelabs.updateJob(client.requestHandler.sessionID, {
+            name: name,
+            passed: allPassed
+        }, function() {});
 
         client.end(done);
     });
 
-  it("should get guinea pig page 3", function(done) {
-    name = this.test.fullTitle();
-    client
-      .url("https://saucelabs.com/test/guinea-pig")
-      .getTitle()
-      .should
-      .eventually
-      .be
-      .equal("I am a page title - Sauce Labs")
-      .and.notify(done);
-  });
-
-
-  it("should get guinea pig page 4", function(done) {
-    name = this.test.fullTitle();
-    client
-      .url("https://saucelabs.com/test/guinea-pig")
-      .getTitle()
-      .should
-      .eventually
-      .be
-      .equal("I am a page title - Sauce Labs")
-      .and.notify(done);
-  });
+    it("should get guinea pig page 4", function(done) {
+        name = this.test.fullTitle();
+        client
+            .url("https://saucelabs.com/test/guinea-pig")
+            .getTitle()
+            .should
+            .eventually
+            .be
+            .equal("I am a page title - Sauce Labs")
+            .and.notify(done);
+    });
 
 });

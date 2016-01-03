@@ -100,7 +100,7 @@ describe('   mocha spec examples (' + desired.browserName + ')', function() {
     it("load playstation.com", function(done) {
         name = this.test.fullTitle();
         client
-            .url("http://localhost:8008")
+            .url("http://10446c76.ngrok.io")
             .click('#link-to-playstation')
             .getUrl()
             .should

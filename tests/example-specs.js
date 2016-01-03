@@ -7,6 +7,7 @@ var webdriverio = require('webdriverio'),
     chaiAsPromised = require("chai-as-promised"),
     user = process.env.SAUCE_USERNAME,
     accessKey = process.env.SAUCE_ACCESS_KEY,
+    tunnelId = 'test-tunnel-id',
     SauceLabs = require("saucelabs"),
     saucelabs = new SauceLabs({
         username: user,
@@ -28,7 +29,9 @@ var webdriverio = require('webdriverio'),
         user: user,
         key: accessKey,
         logLevel: "silent"
-    };
+    },
+    sauceConnectLauncher = require('sauce-connect-launcher'),
+    sauceConnectProcess;
 
 chai.should();
 chai.use(chaiAsPromised);
@@ -42,10 +45,36 @@ describe('   mocha spec examples (' + desired.browserName + ')', function() {
         allPassed = true,
         name = "";
 
-    this.timeout(60000);
+    this.timeout(600000);
 
     after(function(done) {
-        done();
+        sauceConnectProcess.close(function() {
+            console.log("Closed Sauce Connect process");
+            done();
+        });
+    });
+
+    before(function(done) {
+        sauceConnectLauncher({
+            username: user,
+            accessKey: accessKey,
+            tunnelIdentifier: tunnelId,
+            verbose: true,
+            verboseDebugging: true,
+            logger: console.log
+        }, function(err, process) {
+            if (err) {
+                console.log("errored out");
+                console.error(err.message);
+                done();
+                return;
+            }
+            console.log("Sauce Connect ready");
+
+            sauceConnectProcess = process;
+
+            done();
+        });
     });
 
     beforeEach(function(done) {
@@ -67,7 +96,7 @@ describe('   mocha spec examples (' + desired.browserName + ')', function() {
         client.end(done);
     });
 
-    it("should get guinea pig page 4", function(done) {
+    it("load playstation.com", function(done) {
         name = this.test.fullTitle();
         client
             .url("https://saucelabs.com/test/guinea-pig")

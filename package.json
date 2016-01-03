@@ -4,12 +4,13 @@
   "description": "Parallel tests with Mocha and Webdriverio  =============",
   "main": "",
   "devDependencies": {
-    "webdriverio": "*",
+    "chai": "*",
     "chai-as-promised": "*",
     "colors": "*",
     "lodash": "*",
-    "chai": "*",
     "mocha": "*",
-    "saucelabs": "*"
+    "sauce-connect-launcher": "^0.13.0",
+    "saucelabs": "*",
+    "webdriverio": "*"
   }
 }

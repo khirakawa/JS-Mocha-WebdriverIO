@@ -99,12 +99,13 @@ describe('   mocha spec examples (' + desired.browserName + ')', function() {
     it("load playstation.com", function(done) {
         name = this.test.fullTitle();
         client
-            .url("https://saucelabs.com/test/guinea-pig")
-            .getTitle()
+            .url("http://localhost:8008")
+            .click('#link-to-playstation')
+            .getUrl()
             .should
             .eventually
             .be
-            .equal("I am a page title - Sauce Labs")
+            .equal("https://www.playstation.com/en-us/")
             .and.notify(done);
     });
 

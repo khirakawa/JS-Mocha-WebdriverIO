@@ -11,6 +11,7 @@
     "mocha": "*",
     "sauce-connect-launcher": "^0.13.0",
     "saucelabs": "*",
+    "static-server": "^2.0.1",
     "webdriverio": "*"
   }
 }

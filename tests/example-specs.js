@@ -17,7 +17,8 @@ var webdriverio = require('webdriverio'),
         chrome: {
             browserName: 'chrome',
             platform: 'OS X 10.10',
-            version: '45.0'
+            version: '45.0',
+            tunnelIdentifier: tunnelId
         },
     },
     browserKey = process.env.BROWSER || 'chrome',
@@ -45,7 +46,7 @@ describe('   mocha spec examples (' + desired.browserName + ')', function() {
         allPassed = true,
         name = "";
 
-    this.timeout(600000);
+    this.timeout(60000);
 
     after(function(done) {
         sauceConnectProcess.close(function() {
